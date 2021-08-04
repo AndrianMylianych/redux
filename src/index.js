@@ -3,10 +3,74 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import {Provider} from "react-redux";
+import {createStore} from "redux";
+
+const initialState = {
+    counter: {
+        value: 0
+    },
+    posts: [],
+}
+
+const reducer = (state = initialState, action) => {
+    switch (action.type) {
+        case 'INC': {
+            return {
+                ...state,
+                counter: {
+                    value: state.counter.value + 1
+                }
+            }
+        }
+
+        case 'DEC': {
+            return {
+                ...state,
+                counter: {
+                    value: state.counter.value - 1
+                }
+            }
+        }
+
+        case 'CLEAR': {
+            return{
+                ...state,
+                counter: {
+                    value: 0
+                }
+            }
+        }
+
+        case 'TYPE':{
+                const yourNumber = +prompt('your number')
+            return{
+                ...state,
+                counter:{
+                    value: state.counter.value + yourNumber
+                }
+            }
+        }
+
+        case 'ADD_POSTS': {
+            return{
+                ...state,
+                posts: action.payload
+            }
+        }
+
+        default:
+            return state;
+    }
+}
+
+const store = createStore(reducer)
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Provider store={store}>
+      <App />
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );
